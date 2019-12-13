@@ -1,7 +1,8 @@
-# helper function
+# helper function for noise regularization analysis
 library(dplyr)
 library(tibble)
-#library(data.table)
+library(data.table)
+
 
 # permute matrix by each column
 shuffle = function(m,seed = 1){
@@ -336,8 +337,6 @@ pairwise.cor = function(gene.list,do.shuffle=F,do.random=F,seed=1,title='',min=0
 }
 
 
-
-
 # plot histogram
 plot_multi_histogram <- function(df, feature, label_column) {
     
@@ -378,8 +377,7 @@ cor2pvalue = function(r, n) {
 }
 
 
-
-# 
+ 
 # multi core from https://gist.github.com/bobthecat/5024079
 # did some modifications
 bigcorPar <- function(x, nblocks = 10, verbose = TRUE, ncore="all", ...){
