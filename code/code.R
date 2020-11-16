@@ -1,9 +1,7 @@
-# helper function for noise regularization analysis
+# helper function
 library(dplyr)
 library(tibble)
-library(data.table)
-
-
+#library(data.table)
 
 # permute matrix by each column
 shuffle = function(m,seed = 1){
@@ -220,7 +218,7 @@ ppi_frac_plot_dif_quantile = function(m,gene.list, cuts = seq(100,10000,500), qu
 
 
 # plot ppi plot with different random number (gene by gene)
-ppi_frac_plot_dif_quantile.bygene = function(m,gene.list, cuts = seq(100,10000,500), max.low=1, quantile.mat, quantile.list,string.data,title,out.dir,ncore=4,nblocks=20,seed=1){
+noise.regularization = function(m,gene.list, cuts = seq(100,10000,500), max.low=1, quantile.mat, quantile.list,string.data,title,out.dir,ncore=4,nblocks=20,seed=1){
   #add.cor.df = pair_cor(m=m, gene.list = gene.list)
   #frac.df.all = ppi_frac_plot_rank(cor.df = add.cor.df, cuts = cuts,string.data = string.data,title = '',type =0,do.plot = F)
   dir.create(out.dir,showWarnings = F,recursive = T)
@@ -338,6 +336,8 @@ pairwise.cor = function(gene.list,do.shuffle=F,do.random=F,seed=1,title='',min=0
 }
 
 
+
+
 # plot histogram
 plot_multi_histogram <- function(df, feature, label_column) {
     
@@ -378,7 +378,8 @@ cor2pvalue = function(r, n) {
 }
 
 
- 
+
+# 
 # multi core from https://gist.github.com/bobthecat/5024079
 # did some modifications
 bigcorPar <- function(x, nblocks = 10, verbose = TRUE, ncore="all", ...){
@@ -524,7 +525,7 @@ calculate.mean.pair = function(df, gene.mean.expr){
 
 # compile function
 library('compiler')
-ppi_frac_plot_dif_quantile.bygene.cmp = cmpfun(ppi_frac_plot_dif_quantile.bygene)
+noise.regularization.cmp = cmpfun(noise.regularization)
 
 
 ### pick max correlation among clusters
@@ -540,7 +541,7 @@ pick.max.cluster = function(cor.dir,prefix,add='add0',clusters = 0:9, cell.num, 
   cor.df = NULL
   for (i in clusters){
       print(i)
-      this.cor.df = readRDS(paste0(cor.dir,'/',prefix,'/cluster',i, '/', prefix2,'.bygene.',add,'.cor.df.rds'))
+      this.cor.df = readRDS(paste0(cor.dir,'/','/cluster',i, '/', prefix2,'.bygene.',add,'.cor.df.rds'))
       
       if (i==0){cor.df = tibble(pair_name = this.cor.df$pair_name)}
 
